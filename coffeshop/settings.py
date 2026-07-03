@@ -100,11 +100,11 @@ DATABASE_URL = (
 def clean_database_url(database_url):
     allowed_options = {'sslmode', 'connect_timeout', 'application_name'}
     parts = urlsplit(database_url)
-    query = urlencode(
+    query = urlencode([
         (key, value)
         for key, value in parse_qsl(parts.query, keep_blank_values=True)
         if key in allowed_options
-    )
+    ])
     return urlunsplit((parts.scheme, parts.netloc, parts.path, query, parts.fragment))
 
 if DATABASE_URL:
