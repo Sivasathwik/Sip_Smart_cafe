@@ -89,7 +89,11 @@ WSGI_APPLICATION = 'coffeshop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = (
+    os.environ.get('DATABASE_URL')
+    or os.environ.get('DATABASE_POSTGRES_URL')
+    or os.environ.get('DATABASE_POSTGRES_PRISMA_URL')
+)
 
 if DATABASE_URL:
     import dj_database_url
