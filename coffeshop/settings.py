@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -95,12 +96,23 @@ DATABASE_URL = (
     or os.environ.get('DATABASE_POSTGRES_PRISMA_URL')
 )
 
+
+def clean_database_url(database_url):
+    allowed_options = {'sslmode', 'connect_timeout', 'application_name'}
+    parts = urlsplit(database_url)
+    query = urlencode(
+        (key, value)
+        for key, value in parse_qsl(parts.query, keep_blank_values=True)
+        if key in allowed_options
+    )
+    return urlunsplit((parts.scheme, parts.netloc, parts.path, query, parts.fragment))
+
 if DATABASE_URL:
     import dj_database_url
 
     DATABASES = {
         'default': dj_database_url.parse(
-            DATABASE_URL,
+            clean_database_url(DATABASE_URL),
             conn_max_age=600,
             ssl_require=True,
         )
