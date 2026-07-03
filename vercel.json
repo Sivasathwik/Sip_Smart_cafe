@@ -3,22 +3,14 @@
   "buildCommand": "python manage.py collectstatic --noinput && python manage.py migrate",
   "builds": [
     {
-      "src": "coffeshop/wsgi.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/media/(.*)",
-      "dest": "/media/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "coffeshop/wsgi.py"
+      "dest": "api/index.py"
     }
   ]
 }
