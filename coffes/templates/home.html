@@ -13,13 +13,17 @@
       --cream: #fffaf0;
       --muted: #6f6256;
       --line: #eadfbf;
+      --glass: rgba(32, 18, 9, .46);
+      --glass-line: rgba(255,255,255,.42);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       min-height: 100vh;
       font-family: "Segoe UI", Arial, sans-serif;
       color: var(--coffee);
-      background: var(--cream);
+      background:
+        linear-gradient(90deg, rgba(26,14,8,.48), rgba(26,14,8,.04)),
+        url('/static/images/coffee-hero-bg.png') center / cover no-repeat fixed;
     }
     .navbar {
       position: sticky;
@@ -72,12 +76,17 @@
       display: grid;
       align-items: center;
       padding: 54px 6vw;
-      background:
-        linear-gradient(90deg, rgba(255,250,240,.98) 0%, rgba(255,250,240,.88) 44%, rgba(255,250,240,.24) 100%),
-        url('/static/images/coffee-hero-bg.png') center right / cover no-repeat;
+      background: transparent;
     }
     .hero-inner {
       max-width: 620px;
+      padding: 32px;
+      border: 1px solid var(--glass-line);
+      border-radius: 8px;
+      color: white;
+      background: var(--glass);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 24px 70px rgba(0,0,0,.22);
       animation: fadeUp .45s ease both;
     }
     .eyebrow {
@@ -96,12 +105,12 @@
     h1 {
       font-size: clamp(2.3rem, 6vw, 4.8rem);
       line-height: .98;
-      color: var(--coffee);
+      color: white;
       margin-bottom: 18px;
       letter-spacing: 0;
     }
     .subtitle {
-      color: var(--muted);
+      color: rgba(255,255,255,.88);
       font-size: 1.08rem;
       line-height: 1.75;
       max-width: 560px;
@@ -129,9 +138,9 @@
       box-shadow: 0 14px 28px rgba(198,145,22,.26);
     }
     .btn-light {
-      color: var(--coffee);
-      background: rgba(255,255,255,.78);
-      border: 1px solid var(--line);
+      color: white;
+      background: rgba(255,255,255,.16);
+      border: 1px solid var(--glass-line);
     }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 32px rgba(52,34,23,.12); }
     .btn:active { transform: scale(.985); }
@@ -143,14 +152,14 @@
       margin-top: 34px;
     }
     .info {
-      background: rgba(255,255,255,.78);
-      border: 1px solid var(--line);
+      background: rgba(255,255,255,.16);
+      border: 1px solid var(--glass-line);
       border-radius: 8px;
       padding: 14px;
       box-shadow: 0 12px 24px rgba(52,34,23,.06);
     }
-    .info strong { display: block; color: #8a6410; margin-bottom: 5px; }
-    .info span { color: var(--muted); font-size: .92rem; }
+    .info strong { display: block; color: #ffe3a4; margin-bottom: 5px; }
+    .info span { color: rgba(255,255,255,.82); font-size: .92rem; }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
@@ -159,6 +168,7 @@
       .navbar { align-items: flex-start; flex-direction: column; }
       .nav-links { justify-content: flex-start; }
       .hero { background-position: center; }
+      .hero-inner { padding: 24px; }
       .quick-info { grid-template-columns: 1fr; }
     }
   </style>
