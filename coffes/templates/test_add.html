@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Image Upload</title>
+</head>
+<body>
+    <h2>Test Menu Item Creation</h2>
+    <form action="/admin/menu/add-item/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>
+            <label>Name:</label><br>
+            <input type="text" name="name" required>
+        </p>
+        <p>
+            <label>Description:</label><br>
+            <textarea name="description" required></textarea>
+        </p>
+        <p>
+            <label>Price:</label><br>
+            <input type="number" name="price" step="0.01" required>
+        </p>
+        <p>
+            <label>Image:</label><br>
+            <input type="file" name="image" accept="image/*">
+        </p>
+        <p>
+            <label>Or Image URL:</label><br>
+            <input type="url" name="image_url">
+        </p>
+        <p>
+            <input type="submit" value="Add Item">
+        </p>
+    </form>
+</body>
+</html>

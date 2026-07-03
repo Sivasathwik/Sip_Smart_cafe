@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sip Smart</title>
+  <style>
+    :root {
+      --coffee: #342217;
+      --gold: #d8ad36;
+      --soft-gold: #fff2c8;
+      --white: #ffffff;
+      --cream: #fffaf0;
+      --muted: #6f6256;
+      --line: #eadfbf;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--coffee);
+      background: var(--cream);
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 6vw;
+      background: rgba(255,255,255,.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(52,34,23,.08);
+    }
+    .brand {
+      color: var(--coffee);
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: .2px;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-links a {
+      color: var(--coffee);
+      text-decoration: none;
+      font-weight: 800;
+      padding: 9px 13px;
+      border-radius: 8px;
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+    .nav-links a:hover {
+      background: var(--soft-gold);
+      color: #8a6410;
+      transform: translateY(-1px);
+    }
+    .nav-links .primary {
+      background: linear-gradient(135deg, #e7bf4b, #c69116);
+      color: white;
+      box-shadow: 0 10px 22px rgba(198,145,22,.22);
+    }
+    .hero {
+      min-height: calc(100vh - 68px);
+      display: grid;
+      align-items: center;
+      padding: 54px 6vw;
+      background:
+        linear-gradient(90deg, rgba(255,250,240,.98) 0%, rgba(255,250,240,.88) 44%, rgba(255,250,240,.24) 100%),
+        url('/static/images/coffee-hero-bg.png') center right / cover no-repeat;
+    }
+    .hero-inner {
+      max-width: 620px;
+      animation: fadeUp .45s ease both;
+    }
+    .eyebrow {
+      display: inline-block;
+      color: #8a6410;
+      background: rgba(255,242,200,.85);
+      border: 1px solid #ead089;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: clamp(2.3rem, 6vw, 4.8rem);
+      line-height: .98;
+      color: var(--coffee);
+      margin-bottom: 18px;
+      letter-spacing: 0;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      max-width: 560px;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-weight: 900;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .btn-main {
+      color: white;
+      background: linear-gradient(135deg, #e7bf4b, #c69116);
+      box-shadow: 0 14px 28px rgba(198,145,22,.26);
+    }
+    .btn-light {
+      color: var(--coffee);
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 32px rgba(52,34,23,.12); }
+    .btn:active { transform: scale(.985); }
+    .quick-info {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 760px;
+      margin-top: 34px;
+    }
+    .info {
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 12px 24px rgba(52,34,23,.06);
+    }
+    .info strong { display: block; color: #8a6410; margin-bottom: 5px; }
+    .info span { color: var(--muted); font-size: .92rem; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 780px) {
+      .navbar { align-items: flex-start; flex-direction: column; }
+      .nav-links { justify-content: flex-start; }
+      .hero { background-position: center; }
+      .quick-info { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="{% url 'home' %}">Sip Smart</a>
+    <div class="nav-links">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'menu_items' %}">Menu</a>
+      <a href="{% url 'cart' %}">Cart</a>
+      {% if user.is_staff %}<a href="{% url 'admin_dashboard' %}">Admin</a>{% endif %}
+      <a href="{% url 'logout' %}">Logout</a>
+      <a class="primary" href="{% url 'menu_items' %}">Order Now</a>
+    </div>
+  </nav>
+
+  <main class="hero">
+    <section class="hero-inner">
+      <h1>Fresh coffee, simple ordering.</h1>
+      <p class="subtitle">Welcome, {{ user.first_name|default:user.email }}. Pick your cafe favorites, choose dine-in or take-away, and place an order with COD, UPI, or card formality.</p>
+      <div class="actions">
+        <a class="btn btn-main" href="{% url 'menu_items' %}">View Menu</a>
+        <a class="btn btn-light" href="{% url 'cart' %}">Go to Cart</a>
+      </div>
+      <div class="quick-info">
+        <div class="info"><strong>24+ Items</strong><span>Coffee, snacks, desserts</span></div>
+        <div class="info"><strong>Easy Pay</strong><span>COD, UPI, card options</span></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Choose Preference - Sip Smart Cafe</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #f5e7da, #e9d5b2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: rgba(111, 78, 55, 0.9);
+      padding: 40px 30px;
+      border-radius: 15px;
+      text-align: center;
+      color: white;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      color: #ffd700;
+    }
+    p {
+      margin-bottom: 30px;
+      font-size: 1rem;
+      color: #f1e9d2;
+    }
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .choices button {
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #ffd700;
+      color: #6f4e37;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .choices button:hover {
+      background-color: #ffcc00;
+      transform: translateY(-2px);
+    }
+    .logout {
+      margin-top: 20px;
+      display: inline-block;
+      color: #f1e9d2;
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sip Smart Cafe</h1>
+    <p>How would you like to enjoy your coffee?</p>
+    <div class="choices">
+      <button onclick="window.location.href='home.html?type=dinein'">Dine-In</button>
+      <button onclick="window.location.href='home.html?type=takeaway'">Take-Away</button>
+    </div>
+    <div class="logout" onclick="window.location.href='signin.html'">
+      Log Out
+    </div>
+  </div>
+</body>
+</html>

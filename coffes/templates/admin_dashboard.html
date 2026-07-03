@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sip Smart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #A0522D 100%);
+            min-height: 100vh;
+            color: #2c1810;
+        }
+
+        .navbar {
+            background: rgba(139, 69, 19, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #F4E4BC;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #F4E4BC;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: rgba(244, 228, 188, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .admin-info {
+            color: #F4E4BC;
+            font-size: 0.9rem;
+        }
+
+        .admin-badge {
+            background: #FF6B35;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            color: #8B4513;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #5D4037;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .section h3 {
+            color: #8B4513;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #D2691E;
+            padding-bottom: 0.5rem;
+        }
+
+        .order-item, .menu-item {
+            background: rgba(244, 228, 188, 0.3);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #8B4513;
+        }
+
+        .order-item .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-id {
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .order-status {
+            padding: 0.2rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-pending { background: #FFF3CD; color: #856404; }
+        .status-preparing { background: #D1ECF1; color: #0C5460; }
+        .status-ready { background: #D4EDDA; color: #155724; }
+        .status-completed { background: #E2E3E5; color: #383D41; }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-image {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .no-image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .menu-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .menu-info h4 {
+            color: #8B4513;
+            margin-bottom: 0.3rem;
+        }
+
+        .added-by {
+            color: #999;
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        .menu-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .menu-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #D2691E;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            background: #f9f9f9;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .price-display:hover {
+            background: #e8f5e8;
+        }
+
+        .btn-edit {
+            background: linear-gradient(45deg, #2196f3, #64b5f6);
+        }
+
+        .btn-edit:hover {
+            background: linear-gradient(45deg, #1976d2, #42a5f5);
+        }
+
+        .form-text {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .image-preview-container {
+            margin-top: 10px;
+        }
+
+        .availability {
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .available { background: #D4EDDA; color: #155724; }
+        .unavailable { background: #F8D7DA; color: #721C24; }
+
+        .btn {
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.3);
+            cursor: pointer;
+            margin: 0.2rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        .btn-small {
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            color: #8B4513;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #D2691E;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #5D4037;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #D2691E;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+
+        /* Editable Price Styles */
+        .price-display {
+            cursor: pointer;
+        }
+
+        .price-display:hover {
+            background: rgba(210, 105, 30, 0.1);
+            border-radius: 5px;
+            padding: 2px 5px;
+        }
+
+        .price-input {
+            width: 80px;
+            padding: 2px 5px;
+            border: 1px solid #D2691E;
+            border-radius: 3px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .message.success {
+            background: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+        }
+
+        .message.error {
+            background: #F8D7DA;
+            color: #721C24;
+            border: 1px solid #F5C6CB;
+        }
+
+        @media (max-width: 768px) {
+            .content-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Sip Smart - Admin</div>
+        <div class="nav-links">
+            <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+            <a href="/admin/">Django Admin</a>
+            <a href="{% url 'home' %}">User View</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+        <div class="admin-info">
+            Admin: {{ user.first_name|default:user.email }}
+            <span class="admin-badge">ADMIN</span>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+            <p>Manage Sip Smart operations efficiently</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_users }}</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_admins }}</div>
+                <div class="stat-label">Admin Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_menu_items }}</div>
+                <div class="stat-label">Menu Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ available_items }}</div>
+                <div class="stat-label">Available Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_orders }}</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ pending_orders }}</div>
+                <div class="stat-label">Pending Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ preparing_orders }}</div>
+                <div class="stat-label">Preparing</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ ready_orders }}</div>
+                <div class="stat-label">Ready Orders</div>
+            </div>
+        </div>
+
+        <div class="content-sections">
+            <div class="section">
+                <h3>Recent Orders</h3>
+                <!-- Message container for success/error messages -->
+                <div id="order-messages"></div>
+                
+                {% for order in recent_orders %}
+                <div class="order-item" id="order-item-{{ order.id }}">
+                    <div class="order-header">
+                        <span class="order-id">Order #{{ order.id }}</span>
+                        <span class="order-status status-{{ order.status|lower }}" id="status-{{ order.id }}">{{ order.status }}</span>
+                    </div>
+                    <div>
+                        <strong>Customer:</strong> {{ order.user.email }}<br>
+                        <strong>Total:</strong> ${{ order.total_price }}<br>
+                        <strong>Type:</strong> {{ order.order_type }}<br>
+                        <strong>Date:</strong> {{ order.created_at|date:"M d, Y H:i" }}
+                    </div>
+                    <div style="margin-top: 0.5rem;">
+                        <button class="btn btn-small" id="btn-{{ order.id }}" onclick="updateOrderStatus({{ order.id }}, '{{ order.status }}')">
+                            {% if order.status == 'Pending' %}Mark Complete{% else %}Mark Pending{% endif %}
+                        </button>
+                        <a href="/admin/coffes/order/{{ order.id }}/change/" class="btn btn-small">Details</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No recent orders found.</p>
+                {% endfor %}
+                
+                <div class="actions-center">
+                    <a href="/admin/coffes/order/" class="btn">View All Orders</a>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Menu Management</h3>
+                <!-- Message container for success/error messages -->
+                <div id="menu-messages"></div>
+                
+                {% for item in menu_items %}
+                <div class="menu-item" id="menu-item-{{ item.id }}">
+                    <div class="menu-image">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-image">
+                        {% elif item.image_url %}
+                            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="item-image">
+                        {% else %}
+                            <div class="no-image-placeholder">No Image</div>
+                        {% endif %}
+                    </div>
+                    <div class="menu-info">
+                        <h4>{{ item.name }}</h4>
+                        <p>{{ item.description|truncatechars:50 }}</p>
+                        {% if item.added_by %}
+                            <small class="added-by">Added by: {{ item.added_by.email }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="menu-actions">
+                        <div class="menu-price price-display" onclick="editPrice({{ item.id }}, {{ item.price }})">
+                            $<span id="price-{{ item.id }}">{{ item.price }}</span>
+                        </div>
+                        <div class="availability {% if item.availability %}available{% else %}unavailable{% endif %}" id="availability-{{ item.id }}">
+                            <span id="availability-text-{{ item.id }}">{% if item.availability %}Available{% else %}Unavailable{% endif %}</span>
+                        </div>
+                        <button class="btn btn-small" id="toggle-btn-{{ item.id }}" onclick="toggleMenuAvailability({{ item.id }}, {{ item.availability|yesno:'false,true' }})">
+                            <span id="toggle-text-{{ item.id }}">{% if item.availability %}Disable{% else %}Enable{% endif %}</span>
+                        </button>
+                        <button class="btn btn-small btn-edit" onclick="openEditItemModal({{ item.id }}, '{{ item.name|escapejs }}', '{{ item.description|escapejs }}', {{ item.price }}, '{{ item.image_display_url|escapejs }}')">
+                            Edit
+                        </button>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No menu items found.</p>
+                {% endfor %}
+                
+                <div class="actions-center">
+                    <button class="btn" onclick="openAddItemModal()">Add New Item</button>
+                    <a href="/admin/coffes/menuitem/" class="btn">Django Admin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Menu Item Modal -->
+    <div id="addItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Add New Menu Item</div>
+            <div id="modal-messages"></div>
+            <form id="addItemForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="itemName">Item Name</label>
+                    <input type="text" id="itemName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemDescription">Description</label>
+                    <textarea id="itemDescription" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">Price ($)</label>
+                    <input type="number" id="itemPrice" name="price" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemImage">Image</label>
+                    <input type="file" id="itemImage" name="image" accept="image/*">
+                    <small class="form-text">Optional: Upload an image for this menu item</small>
+                </div>
+                <div class="form-group">
+                    <label for="itemImageUrl">Or Image URL</label>
+                    <input type="url" id="itemImageUrl" name="image_url" placeholder="https://example.com/image.jpg">
+                    <small class="form-text">Optional: Provide a URL to an image instead</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeAddItemModal()">Cancel</button>
+                    <button type="submit" class="btn">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Menu Item Modal -->
+    <div id="editItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Edit Menu Item</div>
+            <div id="edit-modal-messages"></div>
+            <form id="editItemForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="editItemId" name="item_id">
+                <div class="form-group">
+                    <label for="editItemName">Item Name</label>
+                    <input type="text" id="editItemName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="editItemDescription">Description</label>
+                    <textarea id="editItemDescription" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editItemPrice">Price ($)</label>
+                    <input type="number" id="editItemPrice" name="price" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="editItemImage">Image</label>
+                    <input type="file" id="editItemImage" name="image" accept="image/*">
+                    <small class="form-text">Optional: Upload a new image</small>
+                    <div id="currentImagePreview" style="margin-top: 10px;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="editItemImageUrl">Or Image URL</label>
+                    <input type="url" id="editItemImageUrl" name="image_url" placeholder="https://example.com/image.jpg">
+                    <small class="form-text">Optional: Provide a URL to an image instead</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeEditItemModal()">Cancel</button>
+                    <button type="submit" class="btn">Update Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function updateOrderStatus(orderId, status) {
+            if(confirm(`Are you sure you want to mark this order as ${status}?`)) {
+                // Here you would make an AJAX call to update the order status
+                fetch('/admin/orders/update-status/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        order_id: orderId,
+                        status: status
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.error || 'Error updating order status');
+                    }
+                })
+                .catch(error => alert('Error updating order status: ' + error.message));
+            }
+        }
+        
+        function toggleAvailability(itemId, newStatus) {
+            const action = newStatus ? 'enable' : 'disable';
+            if(confirm(`Are you sure you want to ${action} this menu item?`)) {
+                // Here you would make an AJAX call to toggle availability
+                fetch('/admin/menu/toggle-availability/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        item_id: itemId,
+                        availability: newStatus
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.error || 'Error updating menu item');
+                    }
+                })
+                .catch(error => alert('Error updating menu item: ' + error.message));
+            }
+        }
+        
+        // Auto-refresh every 30 seconds for real-time updates
+        setInterval(() => {
+            location.reload();
+        }, 30000);
+    </script>
+    <script>
+        // CSRF token for AJAX requests
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // Display messages
+        function showMessage(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '<div class="alert ' + type + '">' + message + '</div>';
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 3000);
+        }
+
+        // Order Management Functions
+        function updateOrderStatus(orderId, currentStatus) {
+            const newStatus = currentStatus === 'Pending' ? 'Completed' : 'Pending';
+            
+            fetch('/admin/orders/update-status/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({
+                    order_id: orderId,
+                    status: newStatus
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const statusElement = document.getElementById('status-' + orderId);
+                    const buttonElement = document.getElementById('btn-' + orderId);
+                    
+                    statusElement.textContent = data.new_status;
+                    statusElement.className = 'order-status status-' + data.new_status.toLowerCase();
+                    buttonElement.textContent = data.new_status === 'Pending' ? 'Mark Complete' : 'Mark Pending';
+                    
+                    showMessage('order-messages', 'Order status updated successfully!', 'success');
+                } else {
+                    showMessage('order-messages', 'Error updating order status', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('order-messages', 'Error updating order status', 'error');
+            });
+        }
+
+        // Menu Management Functions
+        function toggleMenuAvailability(itemId, currentAvailability) {
+            const newAvailability = !currentAvailability;
+            
+            fetch('/admin/menu/toggle-availability/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    availability: newAvailability
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const availabilityElement = document.getElementById('availability-' + itemId);
+                    const availabilityTextElement = document.getElementById('availability-text-' + itemId);
+                    const toggleButtonElement = document.getElementById('toggle-btn-' + itemId);
+                    const toggleTextElement = document.getElementById('toggle-text-' + itemId);
+                    
+                    if (data.new_availability) {
+                        availabilityElement.className = 'availability available';
+                        availabilityTextElement.textContent = 'Available';
+                        toggleTextElement.textContent = 'Disable';
+                    } else {
+                        availabilityElement.className = 'availability unavailable';
+                        availabilityTextElement.textContent = 'Unavailable';
+                        toggleTextElement.textContent = 'Enable';
+                    }
+                    
+                    showMessage('menu-messages', 'Item availability updated successfully!', 'success');
+                } else {
+                    showMessage('menu-messages', 'Error updating item availability', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('menu-messages', 'Error updating item availability', 'error');
+            });
+        }
+
+        function editPrice(itemId, currentPrice) {
+            const priceElement = document.getElementById('price-' + itemId);
+            const originalContent = priceElement.innerHTML;
+            
+            // Create input field
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.step = '0.01';
+            input.min = '0';
+            input.value = currentPrice;
+            input.style.width = '80px';
+            input.style.textAlign = 'center';
+            
+            // Replace content with input
+            priceElement.innerHTML = '';
+            priceElement.appendChild(input);
+            input.focus();
+            input.select();
+            
+            function savePrice() {
+                const newPrice = parseFloat(input.value);
+                if (isNaN(newPrice) || newPrice < 0) {
+                    priceElement.innerHTML = originalContent;
+                    return;
+                }
+                
+                fetch('/admin/menu/update-price/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({
+                        item_id: itemId,
+                        price: newPrice
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        priceElement.innerHTML = newPrice.toFixed(2);
+                        showMessage('menu-messages', 'Price updated successfully!', 'success');
+                    } else {
+                        priceElement.innerHTML = originalContent;
+                        showMessage('menu-messages', 'Error updating price', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    priceElement.innerHTML = originalContent;
+                    showMessage('menu-messages', 'Error updating price', 'error');
+                });
+            }
+            
+            function cancelEdit() {
+                priceElement.innerHTML = originalContent;
+            }
+            
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    savePrice();
+                } else if (e.key === 'Escape') {
+                    cancelEdit();
+                }
+            });
+            
+            input.addEventListener('blur', savePrice);
+        }
+
+        // Modal Functions
+        function openAddItemModal() {
+            document.getElementById('addItemModal').style.display = 'block';
+            document.getElementById('itemName').focus();
+        }
+
+        function closeAddItemModal() {
+            document.getElementById('addItemModal').style.display = 'none';
+            document.getElementById('addItemForm').reset();
+            document.getElementById('modal-messages').innerHTML = '';
+        }
+
+        // Add new menu item
+        document.getElementById('addItemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('/admin/menu/add-item/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('modal-messages', 'Item added successfully! Refreshing page...', 'success');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showMessage('modal-messages', data.error || 'Error adding item', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('modal-messages', 'Error adding item', 'error');
+            });
+        });
+
+        // Edit item functions
+        function openEditItemModal(itemId, name, description, price, imageUrl) {
+            document.getElementById('editItemId').value = itemId;
+            document.getElementById('editItemName').value = name;
+            document.getElementById('editItemDescription').value = description;
+            document.getElementById('editItemPrice').value = price;
+            document.getElementById('editItemImageUrl').value = '';
+            
+            // Show current image preview
+            const preview = document.getElementById('currentImagePreview');
+            if (imageUrl && imageUrl !== '/static/images/default-item.png') {
+                preview.innerHTML = '<img src="' + imageUrl + '" style="max-width: 100px; max-height: 100px; border-radius: 4px;" alt="Current image">';
+            } else {
+                preview.innerHTML = '<p style="color: #999; font-size: 0.8rem;">No current image</p>';
+            }
+            
+            document.getElementById('editItemModal').style.display = 'block';
+            document.getElementById('editItemName').focus();
+        }
+
+        function closeEditItemModal() {
+            document.getElementById('editItemModal').style.display = 'none';
+            document.getElementById('editItemForm').reset();
+            document.getElementById('edit-modal-messages').innerHTML = '';
+        }
+
+        // Edit menu item form submission
+        document.getElementById('editItemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const itemId = formData.get('item_id');
+            
+            fetch('/admin/menu/edit-item/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('edit-modal-messages', 'Item updated successfully! Refreshing page...', 'success');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showMessage('edit-modal-messages', data.error || 'Error updating item', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('edit-modal-messages', 'Error updating item', 'error');
+            });
+        });
+
+        // Close modal when clicking outside (but not on modal content)
+        window.addEventListener('click', function(event) {
+            const addModal = document.getElementById('addItemModal');
+            const editModal = document.getElementById('editItemModal');
+            
+            // Only close if clicking on the modal background, not the content
+            if (event.target === addModal) {
+                closeAddItemModal();
+            }
+            if (event.target === editModal) {
+                closeEditItemModal();
+            }
+        });
+
+        // Prevent modal from closing when clicking inside modal content
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalContents = document.querySelectorAll('.modal-content');
+            modalContents.forEach(function(content) {
+                content.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

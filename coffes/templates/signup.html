@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Sip Smart</title>
+  <style>
+    :root {
+      --coffee: #2f1c12;
+      --gold: #d9a441;
+      --gold-dark: #9f641c;
+      --glass: rgba(255, 255, 255, .22);
+      --glass-strong: rgba(255, 255, 255, .34);
+      --line: rgba(255, 255, 255, .46);
+      --danger: #ffd5db;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(26, 14, 8, .58), rgba(26, 14, 8, .18)),
+        url('/static/images/coffee-hero-bg.png') center / cover no-repeat fixed;
+      display: flex;
+      align-items: center;
+      padding: 44px clamp(18px, 7vw, 90px);
+    }
+    .auth-panel {
+      width: min(430px, 100%);
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--glass);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, .22);
+    }
+    h1 { margin: 0; font-size: 2.5rem; letter-spacing: 0; }
+    .subtitle { margin: 8px 0 24px; color: rgba(255,255,255,.84); line-height: 1.5; }
+    .alert {
+      padding: 11px 12px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      color: var(--danger);
+      background: rgba(0,0,0,.26);
+      border: 1px solid rgba(255,255,255,.32);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+    form { display: grid; gap: 12px; }
+    .input {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--glass-strong);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+    .input::placeholder { color: rgba(255,255,255,.72); }
+    .input:focus { border-color: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.14); }
+    .role-title { color: rgba(255,255,255,.88); font-size: .88rem; font-weight: 800; }
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .role-option { cursor: pointer; }
+    .role-option input { position: absolute; opacity: 0; }
+    .role-card {
+      display: block;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.14);
+      text-align: center;
+      font-weight: 900;
+    }
+    .role-card small {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255,255,255,.72);
+      font-size: .74rem;
+      font-weight: 600;
+    }
+    .role-option input:checked + .role-card {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      border-color: rgba(255,255,255,.7);
+      color: #fff;
+    }
+    .btn {
+      min-height: 50px;
+      border: 0;
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 16px 30px rgba(0,0,0,.22);
+    }
+    .switch { margin-top: 18px; text-align: center; color: rgba(255,255,255,.86); }
+    .link { color: #ffe3a4; font-weight: 900; text-decoration: none; }
+    .link:hover { text-decoration: underline; }
+    @media (max-width: 620px) {
+      body { align-items: flex-start; padding-top: 26px; }
+      .auth-panel { padding: 22px; }
+      .role-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="auth-panel">
+    <h1>Sip Smart</h1>
+    <p class="subtitle">Create your account and choose how you want to use the cafe site.</p>
+
+    {% if error %}<div class="alert">{{ error }}</div>{% endif %}
+
+    <form method="POST" action="{% url 'signup' %}" autocomplete="off">
+      {% csrf_token %}
+      <input class="input" type="text" name="fullname" placeholder="Full Name" value="{{ fullname|default:'' }}" required />
+      <input class="input" type="email" name="email" placeholder="Email Address" autocomplete="new-password" data-clear-on-load="true" required />
+      <input class="input" type="password" name="password1" placeholder="Password" autocomplete="new-password" required />
+      <input class="input" type="password" name="password2" placeholder="Confirm Password" autocomplete="new-password" required />
+
+      <div class="role-title">Choose account type</div>
+      <div class="role-grid">
+        <label class="role-option">
+          <input type="radio" name="account_type" value="user" {% if account_type != 'admin' %}checked{% endif %} />
+          <span class="role-card">User<small>Order cafe items</small></span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="account_type" value="admin" {% if account_type == 'admin' %}checked{% endif %} />
+          <span class="role-card">Admin<small>Manage orders</small></span>
+        </label>
+      </div>
+
+      <button class="btn" type="submit">Create Account</button>
+    </form>
+
+    <div class="switch">
+      Already have an account? <a href="{% url 'login' %}" class="link">Sign in</a>
+    </div>
+  </main>
+  <script>
+    window.addEventListener('pageshow', () => {
+      document.querySelectorAll('[data-clear-on-load="true"]').forEach((input) => {
+        input.value = '';
+        input.defaultValue = '';
+      });
+    });
+  </script>
+</body>
+</html>

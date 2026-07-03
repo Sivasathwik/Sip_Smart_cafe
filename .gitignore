@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+coffe_env/
+staticfiles/
+media/
+.env
+db.sqlite3
+*.sqlite3
+*.sqlite3-journal
+*.log
+.vercel/
