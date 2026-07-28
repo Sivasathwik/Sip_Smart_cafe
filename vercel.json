@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "python manage.py collectstatic --noinput && python manage.py migrate",
+  "buildCommand": "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py add_sample_menu",
   "builds": [
     {
       "src": "public/**",
