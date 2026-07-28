@@ -18,6 +18,10 @@ def make_unique_username(name, email):
         username = f'{base}_{counter}'
     return username
 
+
+def landing(request):
+    return render(request, 'landing.html')
+
 # Menu API - Updated for template and API support
 @csrf_exempt
 def menu_items(request):

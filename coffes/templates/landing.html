@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sip Smart Cafe</title>
+  <style>
+    :root {
+      --coffee: #342217;
+      --gold: #d8ad36;
+      --gold-dark: #9f641c;
+      --glass: rgba(32, 18, 9, .48);
+      --glass-line: rgba(255,255,255,.42);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: white;
+      background:
+        linear-gradient(90deg, rgba(26,14,8,.48), rgba(26,14,8,.05)),
+        url('/static/images/coffee-hero-bg.png') center / cover no-repeat fixed;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 7vw;
+      background: rgba(255,255,255,.92);
+      border-bottom: 1px solid rgba(216,173,54,.28);
+      backdrop-filter: blur(14px);
+    }
+    .brand { color: var(--coffee); font-size: 1.45rem; font-weight: 900; text-decoration: none; }
+    .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .nav-links a {
+      color: var(--coffee);
+      text-decoration: none;
+      font-weight: 850;
+      padding: 9px 13px;
+      border-radius: 8px;
+    }
+    .nav-links .primary {
+      color: white;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    }
+    main {
+      min-height: calc(100vh - 70px);
+      display: grid;
+      align-items: center;
+      padding: 54px 7vw;
+    }
+    .panel {
+      max-width: 680px;
+      padding: 34px;
+      border: 1px solid var(--glass-line);
+      border-radius: 8px;
+      background: var(--glass);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 24px 70px rgba(0,0,0,.24);
+    }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: #ffe3a4;
+      font-size: .78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    h1 {
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      line-height: .95;
+      letter-spacing: 0;
+      margin-bottom: 18px;
+    }
+    p {
+      max-width: 590px;
+      color: rgba(255,255,255,.88);
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+    .btn-main { color: white; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); }
+    .btn-light { color: white; border: 1px solid var(--glass-line); background: rgba(255,255,255,.16); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 30px;
+    }
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--glass-line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.14);
+    }
+    .stat strong { display: block; color: #ffe3a4; margin-bottom: 5px; }
+    .stat span { color: rgba(255,255,255,.82); font-size: .92rem; }
+    @media (max-width: 700px) {
+      nav { align-items: flex-start; flex-direction: column; }
+      .panel { padding: 24px; }
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="{% url 'landing' %}">Sip Smart</a>
+    <div class="nav-links">
+      <a href="{% url 'menu_items' %}">Menu</a>
+      <a href="{% url 'login' %}">Sign In</a>
+      <a class="primary" href="{% url 'signup' %}">Create Account</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="panel">
+      <span class="eyebrow">Full-Stack Cafe Ordering App</span>
+      <h1>Sip Smart Cafe</h1>
+      <p>A responsive cafe ordering platform with customer authentication, menu browsing, cart management, order placement, and an admin dashboard for managing orders and menu items.</p>
+      <div class="actions">
+        <a class="btn btn-main" href="{% url 'menu_items' %}">View Menu</a>
+        <a class="btn btn-light" href="{% url 'login' %}">Sign In</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>Django</strong><span>Backend and authentication</span></div>
+        <div class="stat"><strong>PostgreSQL</strong><span>Relational data storage</span></div>
+        <div class="stat"><strong>Responsive UI</strong><span>Desktop and mobile ready</span></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
