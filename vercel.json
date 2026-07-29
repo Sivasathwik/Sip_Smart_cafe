@@ -12,6 +12,18 @@
   ],
   "routes": [
     {
+      "src": "^/$",
+      "dest": "/public/index.html"
+    },
+    {
+      "src": "/favicon.svg",
+      "dest": "/public/favicon.svg"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/public/favicon.svg"
+    },
+    {
       "src": "/static/(.*)",
       "dest": "/public/static/$1"
     },
